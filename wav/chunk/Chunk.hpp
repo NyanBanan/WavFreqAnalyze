@@ -25,8 +25,8 @@ namespace wav::chunk {
 
         virtual ~Chunk() = default;
 
-        constexpr chunk_id_t id() const;
-        constexpr chunk_size_t size() const;
+        chunk_id_t id() const;
+        chunk_size_t size() const;
 
     private:
         chunk_size_t _size;
