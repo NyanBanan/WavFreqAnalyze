@@ -5,6 +5,7 @@
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         std::cout << std::format("usage :{} 'path to .wav/.wave file'", __FILE_NAME__);
+        return -1;
     }
 
     std::filesystem::path filepath(argv[1]);
