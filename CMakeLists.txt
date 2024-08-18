@@ -12,5 +12,4 @@ add_executable(WaveAnalyse main.cpp
         wav/chunk/FmtChunk.hpp
         wav/chunk/DataChunk.cpp
         wav/chunk/DataChunk.hpp
-        wav/WavParser.cpp
         wav/WavParser.hpp)
