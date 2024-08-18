@@ -64,4 +64,29 @@ namespace wav::chunk {
         }
     }
 
+    std::ostream& operator<< (std::ostream& strm, const FmtChunk& fc) {
+        strm << "fmt chunk data: \n"
+             << std::format("Format tag: 0x{:04x},\n"
+                            "Channels: {}\n"
+                            "Samples per sec: {}\n"
+                            "Avg bytes per sec: {}\n"
+                            "Block align: {}\n"
+                            "Bits per sample: {}\n"
+                            "Extension size: {}\n"
+                            "Valid bits per sample: {}\n"
+                            "Channel mask: {}\n"
+                            "Sub format: {}\n",
+                            (uint16_t)fc.getFormatTag(),
+                            fc.getChannels(),
+                            fc.getSamplesPerSec(),
+                            fc.getAvgBytesPerSec(),
+                            fc.getBlockAlign(),
+                            fc.getBitsPerSample(),
+                            fc.getExtSize(),
+                            fc.getValidBitsPerSample(),
+                            fc.getChannelMask(),
+                            fc.getSubFormat());
+        return strm;
+    }
+
 }    //namespace wav::chunk

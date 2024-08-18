@@ -6,6 +6,7 @@
 #define WAVEANALYSE_FMTCHUNK_HPP
 
 #include <istream>
+#include <format>
 
 #include "Chunk.hpp"
 
@@ -53,6 +54,8 @@ namespace wav::chunk {
         uint32_t _channel_mask{};
         uint64_t _sub_format{};
     };
+
+    std::ostream& operator<<(std::ostream& strm, const FmtChunk& fc);
 
 }    //namespace wav::chunk
 #endif    //WAVEANALYSE_FMTCHUNK_HPP
