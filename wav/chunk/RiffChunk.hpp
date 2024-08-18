@@ -29,6 +29,7 @@ namespace wav::chunk {
         void addSubChunk(Chunk&& chunk);
 
         std::optional<FmtChunk*> getFmtChunk();
+        std::optional<DataChunk*> getDataChunk();
 
     private:
         const uint32_t _sub_chunks_size{};

@@ -24,6 +24,16 @@ namespace wav::chunk {
         }
     }
 
-    std::optional<FmtChunk*> RIFFChunk::getFmtChunk() {}
+    std::optional<FmtChunk*> RIFFChunk::getFmtChunk() {
+        auto iter = _sub_chunks.find(FmtChunk::chunk_id);
+        //find is guaranteed that iter contains FmtChunk, that's why I call static_cast
+        return iter != _sub_chunks.end() ? std::optional(static_cast<FmtChunk*>(&iter->second)) : std::nullopt;
+    }
+
+    std::optional<DataChunk*> RIFFChunk::getDataChunk() {
+        auto iter = _sub_chunks.find(DataChunk::chunk_id);
+        //find is guaranteed that iter contains DataChunk, that's why I call static_cast
+        return iter != _sub_chunks.end() ? std::optional(static_cast<DataChunk*>(&iter->second)) : std::nullopt;
+    }
 
 }    //namespace wav::chunk
