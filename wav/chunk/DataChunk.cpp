@@ -20,7 +20,7 @@ namespace wav::chunk {
         data_stream.read(_samples_data.get(), size());
         //read pad byte from stream
         if (size() % 2 != 0) {
-            static char trash;
+            char trash;
             data_stream.read(&trash, 1);
         }
     }
