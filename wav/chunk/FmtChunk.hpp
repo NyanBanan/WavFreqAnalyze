@@ -5,6 +5,8 @@
 #ifndef WAVEANALYSE_FMTCHUNK_HPP
 #define WAVEANALYSE_FMTCHUNK_HPP
 
+#include <istream>
+
 #include "Chunk.hpp"
 
 namespace wav::chunk {
@@ -27,25 +29,17 @@ namespace wav::chunk {
         FmtChunk(chunk_size_t chunk_size);
 
         FormatTag getFormatTag() const;
-        void setFormatTag(FormatTag formatTag);
         uint16_t getChannels() const;
-        void setChannels(uint16_t channels);
         uint32_t getSamplesPerSec() const;
-        void setSamplesPerSec(uint32_t samplesPerSec);
         uint32_t getAvgBytesPerSec() const;
-        void setAvgBytesPerSec(uint32_t avgBytesPerSec);
         uint16_t getBlockAlign() const;
-        void setBlockAlign(uint16_t blockAlign);
         uint16_t getBitsPerSample() const;
-        void setBitsPerSample(uint16_t bitsPerSample);
         uint16_t getExtSize() const;
-        void setExtSize(uint16_t extSize);
         uint16_t getValidBitsPerSample() const;
-        void setValidBitsPerSample(uint16_t validBitsPerSample);
         uint32_t getChannelMask() const;
-        void setChannelMask(uint32_t channelMask);
         uint64_t getSubFormat() const;
-        void setSubFormat(uint64_t subFormat);
+
+        void deserialize(std::istream& data_stream) override;
 
     private:
         FormatTag _format_tag;

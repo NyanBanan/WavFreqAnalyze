@@ -5,6 +5,8 @@
 #ifndef WAVEANALYSE_RIFFCHUNK_HPP
 #define WAVEANALYSE_RIFFCHUNK_HPP
 
+#include <format>
+#include <iostream>
 #include <map>
 #include <optional>
 #include <ranges>
@@ -25,15 +27,17 @@ namespace wav::chunk {
         //Required to add sub chunks by method
         RIFFChunk(chunk_size_t chunk_size);
 
-        void addSubChunk(const Chunk& chunk);
-        void addSubChunk(Chunk&& chunk);
+        //this method take control under chunk data and set nullptr to chunk pointer
+        void addSubChunk(Chunk* chunk);
 
-        std::optional<FmtChunk*> getFmtChunk();
-        std::optional<DataChunk*> getDataChunk();
+        std::optional<std::shared_ptr<FmtChunk>> getFmtChunk();
+        std::optional<std::shared_ptr<DataChunk>> getDataChunk();
+
+        void deserialize(std::istream& data_stream) override;
 
     private:
         const uint32_t _sub_chunks_size{};
-        std::map<chunk_id_t, Chunk> _sub_chunks;
+        std::map<chunk_id_t, std::shared_ptr<Chunk>> _sub_chunks;
     };
 
 }    //namespace wav::chunk

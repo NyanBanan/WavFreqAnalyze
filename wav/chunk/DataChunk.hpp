@@ -4,6 +4,8 @@
 
 #ifndef WAVEANALYSE_DATACHUNK_HPP
 #define WAVEANALYSE_DATACHUNK_HPP
+
+#include <istream>
 #include <memory>
 #include <span>
 
@@ -20,7 +22,8 @@ namespace wav::chunk {
         DataChunk(chunk_size_t chunk_size);
 
         [[nodiscard]] std::shared_ptr<char[]> getSamplesData() const;
-        void setSamplesData(const std::shared_ptr<char[]>& samplesData);
+
+        void deserialize(std::istream& data_stream) override;
 
     private:
         std::shared_ptr<char[]> _samples_data;

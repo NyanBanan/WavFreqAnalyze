@@ -27,6 +27,8 @@ namespace wav::chunk {
 
         chunk_id_t id() const;
         chunk_size_t size() const;
+        //deserialize method must deserialize chunk data from stream except chunk id and chunk size, this params must be set on chunk construction
+        virtual void deserialize(std::istream& data_stream) = 0;
 
     private:
         chunk_size_t _size;
