@@ -14,34 +14,37 @@ namespace wav {
     static void analyzeOneChannel(int cur_channel, std::promise<AnalyzeResult> result) {
         uint32_t lowest_samples_per_period = 0;
         uint32_t max_samples_per_period = 0;
-        uint32_t samples_per_period = 0;
-        std::map<int32_t, uint8_t> repeat_map;
+        uint32_t samples_per_period = 1;
 
-        for (auto i = cur_channel; i < samples_num; i += channels_num) {
+        bool is_up_direction{true};
+        bool is_first_zero_found{false};
+
+        for (auto i = cur_channel; i < samples_num - 1; i += channels_num) {
             samples_per_period++;
             auto curr_sample = data[i];
-            if (repeat_map.contains(curr_sample)) {
-                if (repeat_map[curr_sample] == 0) {
-                    repeat_map[curr_sample]++;
-                } else if (repeat_map[curr_sample] == 1) {
-                    repeat_map[curr_sample] = 0;
+            auto next_sample = data[i + 1];
+            if (curr_sample * next_sample < 0) {
+                if (is_first_zero_found) {
+                    if ((is_up_direction && next_sample > curr_sample)
+                        || (!is_up_direction && next_sample < curr_sample)) {
+                        if (samples_per_period < lowest_samples_per_period || lowest_samples_per_period == 0) {
+                            lowest_samples_per_period = samples_per_period;
+                        }
+                        if (samples_per_period > max_samples_per_period || max_samples_per_period == 0) {
+                            max_samples_per_period = samples_per_period;
+                        }
 
-                    if (samples_per_period < lowest_samples_per_period || lowest_samples_per_period == 0) {
-                        lowest_samples_per_period = samples_per_period;
+                        samples_per_period = 0;
                     }
-                    if (samples_per_period > max_samples_per_period || max_samples_per_period == 0) {
-                        max_samples_per_period = samples_per_period;
-                    }
-
-                    samples_per_period = 0;
+                } else {
+                    is_first_zero_found = true;
+                    is_up_direction = next_sample > curr_sample;
                 }
-            } else {
-                repeat_map.emplace(curr_sample, 1);
             }
         }
-        auto lowest_period_time = lowest_samples_per_period / (double)samples_per_sec * 2;
+        auto lowest_period_time = lowest_samples_per_period / (double)samples_per_sec;
         auto max_freq = 1 / lowest_period_time;
-        auto max_period_time = max_samples_per_period / (double)samples_per_sec * 2;
+        auto max_period_time = max_samples_per_period / (double)samples_per_sec;
         auto lowest_freq = 1 / max_period_time;
 
         result.set_value({lowest_freq, max_freq});
