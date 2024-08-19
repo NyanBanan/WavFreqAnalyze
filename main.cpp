@@ -4,7 +4,8 @@
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        std::cout << std::format("usage :{} 'path to .wav/.wave file'", __FILE_NAME__);
+        std::cout << std::format("usage :{} 'path to .wav/.wave file'",
+                                 std::filesystem::path(argv[0]).filename().string());
         return -1;
     }
 
@@ -39,7 +40,7 @@ int main(int argc, char* argv[]) {
 
     auto fmt_opt = core_chunk.value()->getFmtChunk();
 
-    if(fmt_opt.has_value()){
+    if (fmt_opt.has_value()) {
         std::cout << *fmt_opt.value();
     }
 
