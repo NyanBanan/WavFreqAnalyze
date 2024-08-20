@@ -22,8 +22,8 @@ namespace wav {
         for (auto i = cur_channel; i < samples_num - 1; i += channels_num) {
             samples_per_period++;
             auto curr_sample = data[i];
-            auto next_sample = data[i + 1];
-            if (curr_sample * next_sample < 0) {
+            auto next_sample = data[i + cur_channel];
+            if ((float)(curr_sample * next_sample) <= 0) {
                 if (is_first_zero_found) {
                     if ((is_up_direction && next_sample > curr_sample)
                         || (!is_up_direction && next_sample < curr_sample)) {
